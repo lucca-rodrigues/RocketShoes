@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 export const ProductList = styled.ul`
   display: grid;
@@ -39,6 +40,10 @@ export const ProductList = styled.ul`
       display: flex;
       align-items: center;
 
+      &:hover {
+        background: ${darken(0.03, '#7159c1')};
+      }
+
       div {
         display: flex;
         align-items: center;
@@ -54,6 +59,7 @@ export const ProductList = styled.ul`
         flex: 1;
         text-align: center;
         font-weight: bold;
+        text-transform: uppercase;
       }
     }
   }
