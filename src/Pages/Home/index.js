@@ -1,58 +1,49 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
+import {formatPrice} from '../../util/format'
 
 import { ProductList } from './styles';
 
-function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-asics-gel-rocket-9-masculino/80/D18-4432-080/D18-4432-080_detalhe1.jpg?ts=1581533003?ims=240x240"
-          alt=""
-        />
-        <strong>Tênis</strong>
-        <span>R$ 129,90</span>
+import api from '../../Services/api';
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-asics-gel-rocket-9-masculino/80/D18-4432-080/D18-4432-080_detalhe1.jpg?ts=1581533003?ims=240x240"
-          alt=""
-        />
-        <strong>Tênis</strong>
-        <span>R$ 129,90</span>
+export default class Home extends Component {
+  state = {
+    products: [],
+  };
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://static.netshoes.com.br/produtos/tenis-asics-gel-rocket-9-masculino/80/D18-4432-080/D18-4432-080_detalhe1.jpg?ts=1581533003?ims=240x240"
-          alt=""
-        />
-        <strong>Tênis</strong>
-        <span>R$ 129,90</span>
+  async componentDidMount(){
+    const response = await api.get('products');
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#fff" /> 3
-          </div>
-          <span>Adicionar ao carrinho</span>
-        </button>
-      </li>
-    </ProductList>
-  );
+    const data = response.data.map(product => ({
+      ...product,
+      priceFormated: formatPrice(product.price)
+    }))
+    this.setState({products: data})
+
+  }
+  render() {
+    const {products} = this.state;
+    return (
+      <ProductList>
+        {products.map(product => (
+          <li key={product.id}>
+            <img
+              src={product.image}
+              alt={product.title}
+            />
+            <strong>{product.title}</strong>
+            <span>{product.priceFormated}</span>
+
+            <button type="button">
+              <div>
+                <MdAddShoppingCart size={16} color="#fff" /> 3
+              </div>
+              <span>Adicionar ao carrinho</span>
+            </button>
+          </li>
+
+        ))}
+      </ProductList>
+    );
+  }
 }
-
-export default Home;
