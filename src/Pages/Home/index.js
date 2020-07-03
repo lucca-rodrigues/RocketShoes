@@ -8,7 +8,7 @@ import api from '../../Services/api';
 
 export default class Home extends Component {
   state = {
-    products: [],
+    products: []
   };
 
   async componentDidMount(){
